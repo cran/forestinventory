@@ -27,7 +27,7 @@ small_area_looper<- function(formula, data, phase_id, cluster, small_area, bound
     small_area[["areas"]]<- small_area[["areas"]][i]
 
     # extending model-formula by indicator variable for small area G if unbiased =TRUE
-    if(small_area[["unbiased"]]){formula <- as.formula(paste(paste(all.vars(formula)[1],"~"), paste(c(all.vars(formula)[-1], small_area[["sa.col"]]), collapse= "+")))}
+    if(small_area[["unbiased"]]){eval(parse(text = paste("formula<- update(formula, ~. + ",small_area[["sa.col"]],")", sep = "")))}
 
     # if small_area_nonexhaustive2p is required, then this function is # # sourced and applied:
      if(is.na(cluster) & all(is.na(exhaustive))){

@@ -28,8 +28,8 @@ small_area_looper_3p<- function(formula.s0, formula.s1, data, phase_id, cluster,
 
     # extending model-formula by indicator variable for small area G if unbiased =TRUE
     if(small_area[["unbiased"]]){
-      formula.s0 <- as.formula(paste(paste(all.vars(formula.s0)[1],"~"), paste(c(all.vars(formula.s0)[-1], small_area[["sa.col"]]), collapse= "+")))
-      formula.s1 <- as.formula(paste(paste(all.vars(formula.s1)[1],"~"), paste(c(all.vars(formula.s1)[-1], small_area[["sa.col"]]), collapse= "+")))
+      eval(parse(text = paste("formula.s0<- update(formula.s0, ~. + ",small_area[["sa.col"]],")", sep = "")))
+      eval(parse(text = paste("formula.s1<- update(formula.s1, ~. + ",small_area[["sa.col"]],")", sep = "")))
       }
 
 

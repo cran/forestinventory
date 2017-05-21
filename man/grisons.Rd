@@ -62,4 +62,3 @@ Mandallaz, D., Breschan, J., & Hill, A. (2013). \emph{New regression estimators 
           Forests, 5(9), 2253-2275.
 }
 \keyword{datasets}
-

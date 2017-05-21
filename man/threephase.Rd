@@ -27,9 +27,10 @@ requested in the function.}
      \item \code{phase.col}: the column name in \code{data} that specifies the
                              phase membership of each observation
      \item \code{s1.id}: the indicator identifying the "second phase only" plots
-                               for that column
+                               for that column  (must be of type "\code{\link[base]{numeric}}")
      \item \code{terrgrid.id}: the indicator identifying the terrestrial
                                (a.k.a. "ground truth") phase for that column
+                                (must be of type "\code{\link[base]{numeric}}")
         }}
 
 \item{cluster}{(\emph{Optional}) Specifies the column name in \code{data}
@@ -352,6 +353,5 @@ Mandallaz, D. (2014). \emph{A three-phase sampling extension of the generalized 
 
 Massey, A. and Mandallaz, D. and Lanz, A. (2014). \emph{Integrating remote sensing and past inventory data under the new annual design of the Swiss National Forest Inventory using three-phase design-based regression estimation.} Can. J. For. Res. 44(10): 1177-1186
 
-Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from http://e-collection.library.ethz.ch.
+Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \url{http://e-collection.library.ethz.ch}.
 }
-

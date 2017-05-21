@@ -1,1 +1,9 @@
+09-07-16 development version created
+
 06-07-16  forestinventory Version 0.1-0 released!
+19-05-17  forestinventory Version 0.2.0 released to CRAN!
+New features: extended feasibility-checks and corrections of input data regarding the sample designs,
+Corrections:  improved runtime of psmall-estimator, removed bug for including interaction terms in regression models,
+fixed bug in confidence interval calculation for pseudosynthetic estimator under cluster sampling
+
+

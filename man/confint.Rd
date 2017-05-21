@@ -3,8 +3,8 @@
 \name{confint}
 \alias{confint}
 \alias{confint.onephase}
-\alias{confint.threephase}
 \alias{confint.twophase}
+\alias{confint.threephase}
 \title{Calculates Confidence Intervals for Global and Small-Area Estimations}
 \usage{
 \method{confint}{onephase}(object, parm, level = 0.95,
@@ -37,10 +37,10 @@ Available correction methods are \code{c("none","bonferroni")}. Defaults to \cod
  \item{ci}{a \code{data.frame} containing the columns:
                    \itemize{
                    \item \code{area} the domain, i.e. small area
-                   \item \code{ci.lower.ext} the lower confidence limit based on the external variance
-                   \item \code{ci.upper.ext} the upper confidence limit based on the external variance
-                   \item \code{ci.lower.g}   the lower confidence limit based on the g-weight variance
-                   \item \code{ci.upper.g}   the upper confidence limit based on the g-weight variance
+                   \item \code{ci_lower_ext} the lower confidence limit based on the external variance
+                   \item \code{ci_upper_ext} the upper confidence limit based on the external variance
+                   \item \code{ci_lower_g}   the lower confidence limit based on the g-weight variance
+                   \item \code{ci_upper_g}   the upper confidence limit based on the g-weight variance
                    }}
  \item{level}{the applied confidence level}
  \item{adjust.method}{the adjustment method applied to retrieve simultaneous confidence intervals}
@@ -136,4 +136,3 @@ Benjamini, Y., and Hochberg, Y. (1995). \emph{Controlling the false discovery ra
 a practical and powerful approach to multiple testing.}
 Journal of the Royal Statistical Society Series B 57, 289-300.
 }
-

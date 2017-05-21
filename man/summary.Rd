@@ -3,8 +3,8 @@
 \name{summary}
 \alias{summary}
 \alias{summary.onephase}
-\alias{summary.threephase}
 \alias{summary.twophase}
+\alias{summary.threephase}
 \title{Summarizing Global and Small-Area Estimation Results}
 \usage{
 \method{summary}{onephase}(object, coefs = FALSE, ...)
@@ -26,4 +26,3 @@ gives the regression coefficients of \code{\link{twophase}} and
 \description{
 Summarizing Global and Small-Area Estimation Results
 }
-

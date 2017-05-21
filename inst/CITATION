@@ -3,14 +3,14 @@ citHeader("To cite 'forestinventory' in publications use:")
 year<- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
 
 citEntry(entry = "Manual",
-         title = "forestinventory: Design-Based Global and Small-Area Estimations for Multiphase Forest Inventories. R package version 0.1.0",
-         author = c(person(given = c("Andreas"), family = "Hill",
-                     email = "forestinventory@gmx.ch", role = c("aut","cre")),
-                    person(given = c("Alexander"), family = "Massey",
-                      email = "forestinventory@gmx.ch", role = c("aut"))
-                    ),
-         year = year,
+         title = "forestinventory: Design-based global and small-area estimations for multiphase forest inventories. R package version 0.2.0",
+         author = c(
+                     person("Andreas", "Hill",       email = "andreas.hill@usys.ethz.ch", role = "cre"),
+                     person("Alexander", "Massey",   email = "afmass@gmail.com", role = "aut"),
+                     person("Daniel", "Mandallaz",                                     role = "ctb")
+                   ),
+         year = "2017",
          textVersion =
-           paste("Andreas Hill, Alexander Massey (",year,") .",
-                 "forestinventory: Design-Based Global and Small-Area Estimations for Multiphase Forest Inventories. R package version 0.1.0")
+           paste("Andreas Hill, Alexander Massey, Daniel Mandallaz (2017).",
+                 "forestinventory: Design-based global and small-area estimations for multiphase forest inventories. R package version 0.2.0")
 )

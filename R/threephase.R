@@ -30,9 +30,10 @@
 #'                  \item \code{phase.col}: the column name in \code{data} that specifies the
 #'                                          phase membership of each observation
 #'                  \item \code{s1.id}: the indicator identifying the "second phase only" plots
-#'                                            for that column
+#'                                            for that column  (must be of type "\code{\link[base]{numeric}}")
 #'                  \item \code{terrgrid.id}: the indicator identifying the terrestrial
 #'                                            (a.k.a. "ground truth") phase for that column
+#'                                             (must be of type "\code{\link[base]{numeric}}")
 #'                     }
 #'
 #' @param cluster (\emph{Optional}) Specifies the column name in \code{data}
@@ -156,7 +157,7 @@
 #' with applications to small-area estimation.} Canadian Journal of Forest Research, 43(11), 1023-1031.
 #' @references Mandallaz, D. (2014). \emph{A three-phase sampling extension of the generalized regression estimator with partially exhaustive information.} Can. J. For. Res. 44: 383-388
 #' @references Massey, A. and Mandallaz, D. and Lanz, A. (2014). \emph{Integrating remote sensing and past inventory data under the new annual design of the Swiss National Forest Inventory using three-phase design-based regression estimation.} Can. J. For. Res. 44(10): 1177-1186
-#' @references Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from http://e-collection.library.ethz.ch.
+#' @references Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \url{http://e-collection.library.ethz.ch}.
 #'
 #' @example examples/example_threephase_estimations_long.R
 #'
@@ -251,35 +252,105 @@ threephase <- function(formula.s0, formula.s1, data, phase_id, cluster=NA,
 
   # -------------------------------------------------------------------------- #
   # -------------------------------------------------------------------------- #
+  # Checking the nesting of the sample-design:
+  # --> each s2-point muss have the complete set of s1-auxvars (s1-info) available
+  # --> each s2-point muss have the complete set of s0-auxvars (s0-info) available
+  # --> each s1-point muss have the complete set of s0-auxvars (s0-info) available
+
+  # test 1: s2 c s1 ?
+  s2_in_s1.nest.violation<- sum(is.na(data [ data[[phase_id[["phase.col"]]]] == phase_id[["terrgrid.id"]] , which(colnames(data) %in% all.vars(formula.s1)[-1])]))
+
+  # test 1: s2 c s0 ?
+  s2_in_s0.nest.violation<- sum(is.na(data [ data[[phase_id[["phase.col"]]]] == phase_id[["terrgrid.id"]] , which(colnames(data) %in% all.vars(formula.s0)[-1])]))
+
+  # test 1: s1 c s0 ?
+  s1_in_s0.nest.violation<- sum(is.na(data [ data[[phase_id[["phase.col"]]]] == phase_id[["s1.id"]] , which(colnames(data) %in% all.vars(formula.s0)[-1])]))
+
+
+  if(s2_in_s1.nest.violation > 0){ # read: "s2 with no s1-info"
+    warning(paste("Sample design not nested: for",s2_in_s1.nest.violation,"terrestrial plots at least one auxiliary parameter of the second phase (s1) is missing"))
+  }
+
+  if(s2_in_s0.nest.violation > 0){
+    warning(paste("Sample design not nested: for",s2_in_s0.nest.violation,"terrestrial plots at least one auxiliary parameter of the first phase (s0) is missing"))
+  }
+
+  if(s1_in_s0.nest.violation > 0){
+    warning(paste("Sample design not nested: for",s1_in_s0.nest.violation,"second phase (s1) plots at least one auxiliary parameter of the first phase (s0) is missing"))
+  }
+
+
+  # -------------------------------------------------------------------------- #
+  # -------------------------------------------------------------------------- #
   # NA-treatment:
 
-  # rows to be deleted due to missing auxiliary information or any input parameters:
-  deleted.s0<- !complete.cases(data [, which(colnames(data) %in% all.vars(formula.s0)[-1])]) # logical vector returning rows with missing entries
+  # rows to be deleted due to missing auxiliary information in s0: (s0 in indicated by s0-id AND s1-id in our datasets!)
+  deleted.s0<- !complete.cases(data [ , which(colnames(data) %in% all.vars(formula.s0)[-1])]) # logical vector returning rows with missing entries
   sum.NA_omitted.s0<- sum(deleted.s0)
 
   # delete missing rows in s0 of entire dataset and produce message:
   if(sum.NA_omitted.s0 != 0) {
     data<- data[- which(deleted.s0),]
-    m0<- message(paste(sum.NA_omitted.s0," rows deleted due to missingness in the auxiliary parameters or any of the input parameters in s1",sep = ""))
+    m0<- message(paste(sum.NA_omitted.s0," rows deleted due to missingness in the set of auxiliary parameters for the first phase (s0) (",
+                       s2_in_s0.nest.violation," terrestrial plots affected by deletion)",sep = ""))
   }
 
-  # delete missing rows in s1-phase and produce message:
-  deleted.s1<- !complete.cases(data [, which(colnames(data) %in% all.vars(formula.s1)[-1])]) & data[[phase_id[["phase.col"]]]]==phase_id[["s1.id"]] # logical vector returning rows with missing entries
-  sum.NA_omitted.s1<- sum(deleted.s1)
-  if(sum.NA_omitted.s1 != 0) {
-    data<- data[- which(deleted.s1),]
-    m1<- message(paste(sum.NA_omitted.s1," rows deleted due to missingness in the auxiliary parameters or any of the input parameters in s2",sep = ""))
+
+  # get NA-auxvars-entries for s1-phase (indicated by 's1.id' AND 'terrgrid.id' and turn them into s0-plots (i.e. change phase id).
+  # If they were s2, we should also delete the terrestrial information for safety and clarity:
+  change.s1.to.s0<- !complete.cases(data [, which(colnames(data) %in% all.vars(formula.s1)[-1])]) & data[[phase_id[["phase.col"]]]] %in% c(phase_id[["s1.id"]] , phase_id[["terrgrid.id"]])
+  sum.NA_change.s1.to.s0<- sum(change.s1.to.s0)
+
+  if(sum.NA_change.s1.to.s0 > 0) {
+    data[[phase_id[["phase.col"]]]] [change.s1.to.s0]<- 0
+    data[change.s1.to.s0, which(colnames(data) %in% all.vars(formula.s1)[1])]<- NA
+    m1<- message(paste("Changed the phase_id for ",sum.NA_change.s1.to.s0," rows to the first phase (s0) due to missingness in the set of auxiliary parameters
+                       for the second phase (s1) (",s2_in_s1.nest.violation," terrestrial information no longer usable by this change)",sep = ""))
   }
 
-  # check if  every terrestrial plot has a response-value:
+
+  # check if every terrestrial plot has a response-value:
   deleted.terr <- data[[phase_id[["phase.col"]]]] == phase_id[["terrgrid.id"]] & !complete.cases(data[,all.vars(formula.s1)[1]])
   sum.deleted.terr<- sum(deleted.terr)
 
   # delete items with missing reponse information for s3-grid and produce message:
   if(sum.deleted.terr != 0) {
     data<- data[- which(deleted.terr),]
-    m2<- message(paste(sum.deleted.terr," rows deleted due to missing value for the response variable", sep = ""))
+    m2<- message(paste("Additional ",sum.deleted.terr," rows deleted due to missing value for the response variable", sep = ""))
   }
+
+
+  # -------------------------------------------------------------------------- #
+  # -------------------------------------------------------------------------- #
+  # NA-treatment:
+
+  # # rows to be deleted due to missing auxiliary information or any input parameters:
+  # deleted.s0<- !complete.cases(data [, which(colnames(data) %in% all.vars(formula.s0)[-1])]) # logical vector returning rows with missing entries
+  # sum.NA_omitted.s0<- sum(deleted.s0)
+  #
+  # # delete missing rows in s0 of entire dataset and produce message:
+  # if(sum.NA_omitted.s0 != 0) {
+  #   data<- data[- which(deleted.s0),]
+  #   m0<- message(paste(sum.NA_omitted.s0," rows deleted due to missingness in the auxiliary parameters or any of the input parameters in s1",sep = ""))
+  # }
+  #
+  # # delete missing rows in s1-phase and produce message:
+  # deleted.s1<- !complete.cases(data [, which(colnames(data) %in% all.vars(formula.s1)[-1])]) & data[[phase_id[["phase.col"]]]]==phase_id[["s1.id"]] # logical vector returning rows with missing entries
+  # sum.NA_omitted.s1<- sum(deleted.s1)
+  # if(sum.NA_omitted.s1 != 0) {
+  #   data<- data[- which(deleted.s1),]
+  #   m1<- message(paste(sum.NA_omitted.s1," rows deleted due to missingness in the auxiliary parameters or any of the input parameters in s2",sep = ""))
+  # }
+  #
+  # # check if  every terrestrial plot has a response-value:
+  # deleted.terr <- data[[phase_id[["phase.col"]]]] == phase_id[["terrgrid.id"]] & !complete.cases(data[,all.vars(formula.s1)[1]])
+  # sum.deleted.terr<- sum(deleted.terr)
+  #
+  # # delete items with missing reponse information for s3-grid and produce message:
+  # if(sum.deleted.terr != 0) {
+  #   data<- data[- which(deleted.terr),]
+  #   m2<- message(paste(sum.deleted.terr," rows deleted due to missing value for the response variable", sep = ""))
+  # }
 
 
   # -------------------------------------------------------------------------- #
@@ -336,7 +407,11 @@ threephase <- function(formula.s0, formula.s1, data, phase_id, cluster=NA,
       # source("small_area_looper_3p.R")
 
       # -- call function -- :
-      result <-  small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <-  small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
 
     }
 
@@ -353,7 +428,11 @@ threephase <- function(formula.s0, formula.s1, data, phase_id, cluster=NA,
       # source("small_area_looper_3p.R")
 
       # -- call function -- :
-      result <- small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <- small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
 
     }
 
@@ -421,7 +500,12 @@ threephase <- function(formula.s0, formula.s1, data, phase_id, cluster=NA,
       # source("small_area_looper_3p.R")
 
       # -- call function -- :
-      result <- small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <- small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
+
 
     }
 
@@ -439,23 +523,16 @@ threephase <- function(formula.s0, formula.s1, data, phase_id, cluster=NA,
       # source("small_area_looper_3p.R")
 
       # -- call function -- :
-      result <- small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <- small_area_looper_3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
 
     }
 
 
   } # end of non-cluster function calls
-
-
-  # ---------------------------------------------------------------------#
-  # check if --> psmall estimation is desired and transform output
-
-  if(psmall==TRUE){
-    if(small_area[["unbiased"]]==FALSE){stop("'unbiased' cannot be set to 'FALSE' for 'psmall' = 'TRUE'")} # function would execute though, so its more a logical guideline for the user
-    if(!class(result)[1]=="smallarea"){stop("'psmall' can only be applied for objects of class 'smallarea'")}
-    # source("psmall_fct3p.R")
-    result<- psmall_fct3p(formula.s0, formula.s1, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
-  }
 
 
   # -------------------------------------------------------------------------- #

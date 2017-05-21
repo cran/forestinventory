@@ -48,4 +48,3 @@ Mandallaz, Daniel (1991). \emph{A unified approach to sampling theory for forest
            Chair of Forest Inventory and Planning, Swiss Federal Institute of Technology (ETH). http://dx.doi.org/10.3929/ethz-a-000943897
 }
 \keyword{datasets}
-

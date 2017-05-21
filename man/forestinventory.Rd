@@ -10,8 +10,8 @@ The package provides \strong{\emph{global}}- and \strong{\emph{smallarea estimat
 \strong{\emph{twophase}} and \strong{\emph{threephase}} forest inventories under simple and
 cluster sampling, which have been developed by Daniel Mandallaz at
 ETH Zurich. The implemented methods have been published and applied in various studies
-(see \code{References}) and can be used for \strong{\emph{double sampling for stratification}},
-\strong{\emph{double sampling for regression}} and \strong{\emph{double sampling for regression within strata}}.
+(see \code{References}) and can be used for \strong{\emph{double- and triple sampling for stratification}},
+\strong{\emph{double- and triple sampling for regression}} and \strong{\emph{double- and triple sampling for regression within strata}}.
 }
 \section{Functions}{
 

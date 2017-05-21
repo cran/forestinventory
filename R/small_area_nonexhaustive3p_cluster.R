@@ -67,18 +67,12 @@ small_area_nonexhaustive3p_cluster<- function(formula.s0, formula.s1, data, phas
   if(!is.na(boundary_weights)){cluster_means.s1<- boundaryweight_fct_3p_clust(formula.s1, data_ext.s1, boundary_weights, cluster)}
   data_clust.s1 <- merge(cluster_means.s1, cluster_weights, by=cluster)  # cluster_weights is M(x)
   # data_clust_s1<- merge(cluster_means.s1, clust_info, by="cluster") # attach clusterinfo incl. indicator variable
-  # create and add phase_id on cluster-level:
-  # data_clust.s1_groundindicator <- merge(data_clust.s1, aggregate(data[,c(cluster, phase_id[["phase.col"]])], list(data[,cluster]), unique)[-1], by=cluster, all.x=TRUE)
-
 
   ## ... of reduced model for s1:
   cluster_means_1.s1 <- aggregate(data_ext_1.s1[,-which(names(data_ext_1.s1)==cluster)], list(cluster = data_ext_1.s1[,cluster]), mean)
   # for weighted cluster-means:
   if(!is.na(boundary_weights)){cluster_means_1.s1<- boundaryweight_fct_3p_clust(formula.s0, data_ext_1.s1, boundary_weights, cluster)}
   data_clust_1.s1 <- merge(cluster_means_1.s1, cluster_weights, by=cluster)  #right hand column is M(x)
-  # create and add phase_id on cluster-level:
-  # data_clust_1.s1_groundindicator <- merge(data_clust_1.s1, aggregate(data[,c(cluster, phase_id[["phase.col"]])], list(data[,cluster]), unique)[-1], by=cluster, all.x=TRUE)
-
 
   ## ... of full model for s2:
   data_clust.s2<- data_clust.s1[ data_clust.s1[[phase.col]] == s2.ind, ]

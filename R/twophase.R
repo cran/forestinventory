@@ -25,6 +25,7 @@
 #'                                          phase membership of each observation
 #'                  \item \code{terrgrid.id}: the indicator identifying the terrestrial
 #'                                            (a.k.a. "ground truth") phase for that column
+#'                                             (must be of type "\code{\link[base]{numeric}}")
 #'                     }
 #'
 #' @param cluster (\emph{Optional}) Specifies the column name in \code{data}
@@ -136,7 +137,7 @@
 #'
 #' @references Mandallaz, D. (2007). \emph{Sampling techniques for forest inventories.} Chapter 4. CRC Press.
 #' @references Mandallaz, D. (2013). \emph{Design-based properties of some small-area estimators in forest inventory with two-phase sampling.} Can. J. For. Res. 43: 441-449
-#' @references Mandallaz, D. and Hill, A. and Massey, A. (2016). \emph{Design-based properties of some small-area estimators in forest inventory with two-phase sampling.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from http://e-collection.library.ethz.ch.
+#' @references Mandallaz, D. and Hill, A. and Massey, A. (2016). \emph{Design-based properties of some small-area estimators in forest inventory with two-phase sampling.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \url{http://e-collection.library.ethz.ch}.
 #'
 #' @example examples/example_twophase_estimations_long.R
 #'
@@ -229,30 +230,66 @@ twophase <- function(formula, data, phase_id, cluster=NA,
 
   check.mandatoryInputs(formula, data, phase_id)
 
+  # -------------------------------------------------------------------------- #
+  # -------------------------------------------------------------------------- #
+  # Checking the nesting of the sample-design:
+  # --> each s2-point muss have the complete set of auxvars (s1-info) available
+
+  nest.violation<- sum(is.na(data [ data[[phase_id[["phase.col"]]]] == phase_id[["terrgrid.id"]] , which(colnames(data) %in% all.vars(formula)[-1])]))
+
+  if(nest.violation > 0){
+    warning(paste("Sample design not nested: for",nest.violation,"terrestrial plots at least one auxiliary parameter is missing"))
+  }
+
 
   # -------------------------------------------------------------------------- #
   # -------------------------------------------------------------------------- #
   # NA-treatment:
 
-  # rows to be deleted due to missing auxiliary information or any input parameters:
+  # rows to be deleted due to missingness in s1 (i.e. set of auxiliary informations):
   deleted.s1<- !complete.cases(data [, which(colnames(data) %in% all.vars(formula)[-1])]) # logical vector returning rows with missing entries
   sum.NA_omitted<- sum(deleted.s1)
 
   # delete missing rows in entire dataset and produce message:
   if(sum.NA_omitted != 0) {
     data<- data[- which(deleted.s1),]
-    message(paste(sum.NA_omitted," rows deleted due to missingness in the auxiliary parameters or any of the input parameters",sep = ""))
-    }
+    message(paste(sum.NA_omitted," rows deleted due to missingness in the set of auxiliary parameters (",
+                  nest.violation," terrestrial plots affected by deletion)",sep = ""))
+  }
 
-  # check if  every terrestrial plot has a response-value:
+  # check if every terrestrial plot (s2) has a response-value assigned:
   deleted.s2 <- data[[phase_id[["phase.col"]]]] == phase_id[["terrgrid.id"]] & !complete.cases(data[,all.vars(formula)[1]])
   sum.deleted.s2<- sum(deleted.s2)
 
   # change missing reponse information for s2-grid to s1-grid and produce message:
   if(sum.deleted.s2 != 0) {
     data<- data[- which(deleted.s2),]
-    message(paste(sum.deleted.s2," rows deleted due to missing value for the response variable", sep = ""))
-    }
+    message(paste("Additional ", sum.deleted.s2," rows deleted due to missing value for the response variable", sep = ""))
+  }
+
+  # -------------------------------------------------------------------------- #
+  # -------------------------------------------------------------------------- #
+  # NA-treatment:
+
+  # # rows to be deleted due to missingness in s1 (i.e. set of auxiliary informations):
+  # deleted.s1<- !complete.cases(data [, which(colnames(data) %in% all.vars(formula)[-1])]) # logical vector returning rows with missing entries
+  # sum.NA_omitted<- sum(deleted.s1)
+  #
+  # # delete missing rows in entire dataset and produce message:
+  # if(sum.NA_omitted != 0) {
+  #   data<- data[- which(deleted.s1),]
+  #   message(paste(sum.NA_omitted," rows deleted due to missingness in the auxiliary parameters",sep = ""))
+  #   }
+  #
+  # # check if every entry marked as a terrestrial plot (s2) has a response-value assigned:
+  # deleted.s2 <- data[[phase_id[["phase.col"]]]] == phase_id[["terrgrid.id"]] & !complete.cases(data[,all.vars(formula)[1]])
+  # sum.deleted.s2<- sum(deleted.s2)
+  #
+  # # change missing reponse information for s2-grid to s1-grid and produce message:
+  # if(sum.deleted.s2 != 0) {
+  #   data<- data[- which(deleted.s2),]
+  #   message(paste(sum.deleted.s2," rows deleted due to missing value for the response variable", sep = ""))
+  #   }
 
 
   # -------------------------------------------------------------------------- #
@@ -309,7 +346,11 @@ twophase <- function(formula, data, phase_id, cluster=NA,
       # source("small_area_looper.R")
 
       # -- call function -- :
-      result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
 
 
     }
@@ -327,7 +368,11 @@ twophase <- function(formula, data, phase_id, cluster=NA,
       # source("small_area_looper.R")
 
       # -- call function -- :
-      result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
 
     }
 
@@ -395,7 +440,11 @@ twophase <- function(formula, data, phase_id, cluster=NA,
       # source("small_area_looper.R")
 
       # -- call function -- :
-      result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
 
     }
 
@@ -413,23 +462,16 @@ twophase <- function(formula, data, phase_id, cluster=NA,
       # source("small_area_looper.R")
 
       # -- call function -- :
-      result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      if(!psmall){
+        result <- small_area_looper(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      } else {
+        result<- psmall_fct(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
+      }
 
     }
 
 
   } # end of non-cluster function calls
-
-
-  # ---------------------------------------------------------------------#
-  # check if --> psmall estimation is desired and transform output
-
-  if(psmall==TRUE){
-    if(small_area[["unbiased"]]==FALSE){stop("'unbiased' cannot be set to 'FALSE' for 'psmall' = 'TRUE'")} # function would execute though, so its more a logical guideline for the user
-    if(!class(result)[1]=="smallarea"){stop("'psmall' can only be applied for objects of class 'smallarea'")}
-    # source("psmall_fct.R")
-    result<- psmall_fct(formula, data, phase_id, cluster, small_area, boundary_weights, exhaustive, progressbar, psmall)
-  }
 
 
   # -------------------------------------------------------------------------- #

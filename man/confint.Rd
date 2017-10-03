@@ -53,7 +53,7 @@ Depending on the estimation method specified, \code{confint()} computes confiden
 
 \code{\link{onephase}}:
 
-Two-sided confidence intervals are computed based on the t-distribution with \code{n2 - p} \emph{degrees of freedom},
+Two-sided confidence intervals are computed based on the t-distribution with \code{n2 - 1} \emph{degrees of freedom},
 where \code{n2} is the number of terrestrial data in the respective inventory domain.
 
 \code{\link{twophase}}:
@@ -76,7 +76,7 @@ The calculation of the two-sided confidence intervals for \emph{global} threepha
 with \code{n2 - p} \emph{degrees of freedom}, where \code{p} is the number of parameters used in
 the \strong{full} regression model, and \code{n2} is the number of terrestrial observations
 (i.e. \emph{local densities}) in the inventory domain (note: in notation used here n0, n1 and n2
-correspond to the first, second and third phase sample sizes respectively).
+correspond to the zero, first and second phase sample sizes respectively).
 
 The calculation of the two-sided confidence intervals for \emph{smallarea} theephase estimates
 (objects of class \code{smallarea}) are calculated based on the quantiles of the \emph{t}-distribution

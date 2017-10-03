@@ -46,16 +46,6 @@ summary(op)
 #>     D 396.8496 2290.652 16
 ```
 
-We compute the estimation error in % as the *Standard Deviation / Point Estimate*:
-
-``` r
-ee.o<- 100*(sqrt(op$estimation$variance) / op$estimation$estimate)
-names(ee.o)<- op$estimation$area
-ee.o
-#>        A        B        C        D 
-#> 10.86174 12.21120 10.80583 12.06018
-```
-
 We now try to increase the precision of our estimates by applying a *twophase estimation method*, where we use the large sample of LiDAR-metrics and a linear regression model to specify the relationship between the remote sensing derived predictor variables and the terrestrial timber volume:
 
 ``` r
@@ -88,34 +78,49 @@ summary(sae.2p.uv)
 #>     D 371.0596    1272.7056   1112.735 306 67  65  16 0.6556178
 ```
 
-We again compute the estimation error in % and see how the efficiency has been increased from the onephase to the twophase approach:
+We now want to compare the results and performances of the onephase and twophase method. For such issues, the package provides the `estTable()` function that concatenates the results from the different methods in one `list`:
 
 ``` r
-ee.uv<- 100*(sqrt(sae.2p.uv$estimation$g_variance) / sae.2p.uv$estimation$estimate)
-names(ee.uv)<- op$estimation$area
-ee.uv
-#>        A        B        C        D 
-#> 8.152598 7.607323 9.808440 8.989844
+sae.table<- estTable(est.list = list(op, sae.2p.uv), sae = TRUE)
 
-efficiency<- 100* ((ee.o - ee.uv) / ee.o)
-names(efficiency)<- op$estimation$area
-efficiency
-#>         A         B         C         D 
-#> 24.942062 37.702103  9.230142 25.458441
+data.frame(sae.table[c(1:6,9)])
+#>    area    domain   method       estimator      vartype estimate error
+#> 1     A    global onephase        onephase     variance 410.4047 10.86
+#> 2     A smallarea twophase psynth extended ext_variance 391.1605  8.07
+#> 3     A smallarea twophase psynth extended   g_variance 391.1605  8.15
+#> 4     B    global onephase        onephase     variance 461.4429 12.21
+#> 5     B smallarea twophase psynth extended ext_variance 419.6746  8.30
+#> 6     B smallarea twophase psynth extended   g_variance 419.6746  7.61
+#> 7     C    global onephase        onephase     variance 318.0091 10.81
+#> 8     C smallarea twophase psynth extended ext_variance 328.0117  9.23
+#> 9     C smallarea twophase psynth extended   g_variance 328.0117  9.81
+#> 10    D    global onephase        onephase     variance 396.8496 12.06
+#> 11    D smallarea twophase psynth extended ext_variance 371.0596  9.61
+#> 12    D smallarea twophase psynth extended   g_variance 371.0596  8.99
 ```
 
-In our short example, we were able to reduce the estimation error by 9 % up to 37 % when combining the terrestrial data with the remote sensing data. The package `forestinventory` offers further estimators that can be applied to a wide range of multiphase inventory scenarios.
+We can already see that the estimation errors of the twophase estimation are up to 5% smaller than the onephase errors.
+
+The function `mphase.gain()` can now be used to further compare the performance of the methods:
+
+``` r
+mphase.gain(sae.table)
+#>   area var_onephase var_multiphase   method       estimator gain  rel.eff
+#> 1    A     1987.117       1016.956 twophase psynth extended 48.8 1.953986
+#> 2    B     3175.068       1019.270 twophase psynth extended 67.9 3.115041
+#> 3    C     1180.853       1035.091 twophase psynth extended 12.3 1.140821
+#> 4    D     2290.652       1112.735 twophase psynth extended 51.4 2.058579
+```
+
+The column `gain` tells us that the twophase estimation procedure here leads to a 67.9 % reduction in variance compared to the one- phase procedure". The column `rel.eff` speciﬁes the relative efﬁciency that can be interpreted as the relative sample size of the one-phase estimator needed to achieve the variance of the multi-phase (here twophase) estimator. For small area "B" we can thus see that we would have to increase the terrestrial sample size by factor 3 in the one-phase approach in order to get the same estimation precision as the twophase extended psynth estimator.
+
+So in our short example, we were able to considerably improve the estimation precision when combining the terrestrial data with the remote sensing data. The package `forestinventory` offers further estimators that can be applied to a wide range of multiphase inventory scenarios.
 
 Installation
 ============
 
-The package will soon be available from CRAN:
+The package can be installed from CRAN:
 
 ``` r
 install.packages("forestinventory")
 ```
-
-Coming soon ...
-===============
-
-A vignette will be released as soon as possible, giving detailed information about the implemented estimation methods and estimators and how to apply them to inventory scenarios in practice.

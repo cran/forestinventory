@@ -37,6 +37,18 @@ check.mandatoryInputs<- function(formula, data, phase_id){
    stop("'phase_id'-argument must be of type numeric")
  }
 
+
+ idset<- unique(data [[ phase_id[["phase.col"]] ]])
+
+ if (any(is.na(idset))){
+   stop("Invalid NA value(s) found as 'phase_id'")
+ }
+
+ if (length(idset) > 2){
+   stop(paste(length(idset), "phase ids found. Only 2 different phase ids possible for twophase sampling."))
+ }
+
+
   # --------------------------------- #
   # 4) check for availability of categorical vars in s2-sample:
 
@@ -116,6 +128,17 @@ check.mandatoryInputs3p<- function(formula.s0, formula.s1, data, phase_id){
   if(!all(phase_id[["s2grid.id"]] %in% sapply(unique(data[phase_id[["phase.col"]]]), as.character))) {
     stop("the specified first-phase grid indicator does not exist in data")
   }
+
+  idset<- unique(data [[ phase_id[["phase.col"]] ]])
+
+  if (any(is.na(idset))){
+    stop("Invalid NA value(s) found as 'phase_id'")
+  }
+
+  if (length(idset) > 3){
+    stop(paste(length(idset), "phase ids found. Only 3 different phase ids possible for twophase sampling."))
+  }
+
 
   # --------------------------------- #
   # 5) check for availability of categorical vars in s2-sample:

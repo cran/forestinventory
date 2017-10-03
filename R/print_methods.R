@@ -12,7 +12,7 @@ print.onephase<- function(x, ...){
   cat("\n")
   print(x$input$call)
   cat("\n")
-  cat("Method used:")
+  cat("Estimator used:")
   cat("\n")
 
   if (x$input$cluster){
@@ -46,7 +46,7 @@ print.twophase<- function(x, ...){
     cat("\n")
     print(x$input$call)
     cat("\n")
-    cat("Method used:")
+    cat("Estimator used:")
     cat("\n")
 
 
@@ -150,7 +150,7 @@ print.threephase<- function(x, ...){
     cat("\n")
     print(x$input$call)
     cat("\n")
-    cat("Method used:")
+    cat("Estimator used:")
     cat("\n")
 
 
@@ -284,6 +284,13 @@ print.confint.global<- function(x, ...){
 
 }
 
+
+#' @method print esttable
+#' @export
+print.esttable<- function(x, ...){
+  # print-method for estable-objects:
+  print(data.frame(x))
+}
 
 
 

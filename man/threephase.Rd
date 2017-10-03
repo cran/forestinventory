@@ -11,11 +11,11 @@ threephase(formula.s0, formula.s1, data, phase_id, cluster = NA,
 }
 \arguments{
 \item{formula.s0}{an object of class "\code{\link[stats]{formula}}" as would be used in the function \code{\link[stats]{lm}}
-that contains a reduced set of auxiliary variables available for all first phase plots}
+that contains a reduced set of auxiliary variables available for all zero phase plots}
 
 \item{formula.s1}{an object of class "\code{\link[stats]{formula}}" as would be used in the function \code{\link[stats]{lm}}
 that contains the predictors from \code{formula.s0} as well as further ancilliary predictors available
-for all second phase plots (i.e. \code{formula.s0} is \strong{nested} in \code{formula.s1})}
+for all first phase plots (i.e. \code{formula.s0} is \strong{nested} in \code{formula.s1})}
 
 \item{data}{a data frame containing all variables contained in \code{formula} and a column indexing
 phase membership.  Additional columns designating small-area membership, cluster ID and
@@ -82,12 +82,12 @@ An object of class \code{"threephase"} returns a \code{list} of the following co
                                               fitting the model from the current inventory
                    \item \code{g_variance:} the internal (g-weight) variance that accounts for
                                               fitting the model from the current inventory
-                   \item \code{n0} the first phase sample size of plots
-                   \item \code{n1} the second phase sample size of plots
-                   \item \code{n2} the third phase (i.e. terrestrial) sample size of plots
-                   \item \code{n0G} the first phase sample size in the small area
-                   \item \code{n1G} the second phase sample size in the small area
-                   \item \code{n2G} the third phase (i.e. terrestrial) sample size in the small area
+                   \item \code{n0} the zero phase sample size of plots
+                   \item \code{n1} the first phase sample size of plots
+                   \item \code{n2} the second phase (i.e. terrestrial) sample size of plots
+                   \item \code{n0G} the zero phase sample size in the small area
+                   \item \code{n1G} the first phase sample size in the small area
+                   \item \code{n2G} the second phase (i.e. terrestrial) sample size in the small area
                    \item \code{r.squared_reduced} the R-squared of the linear model based on \code{formula.s0} (i.e. the reduced model)
                    \item \code{r.squared_full} the R-squared of the linear model based on \code{formula.s1} (i.e. the full model)
                    }}
@@ -100,10 +100,10 @@ An object of class \code{"threephase"} returns a \code{list} of the following co
                    }}
  \item{cov_alpha_s2}{the design-based covariance matrix of the reduced model coefficients}
  \item{cov_beta_s2}{the design-based covariance matrix of the full model coefficients}
- \item{Z_bar_1_s0}{the estimated auxiliary means of \code{formula.s0} based on the first phase.
-                   If the first phase is exhaustive, these are the true auxiliary means specified in the input-argument \code{exhaustive}.}
- \item{Z1_bar_s1}{the estimated auxiliary means of \code{formula.s0} based on the second phase}
- \item{Z_bar_s1}{the estimated auxiliary means of \code{formula.s1} based on the second phase}
+ \item{Z_bar_1_s0}{the estimated auxiliary means of \code{formula.s0} based on the zero phase.
+                   If the zero phase is exhaustive, these are the true auxiliary means specified in the input-argument \code{exhaustive}.}
+ \item{Z1_bar_s1}{the estimated auxiliary means of \code{formula.s0} based on the first phase}
+ \item{Z_bar_s1}{the estimated auxiliary means of \code{formula.s1} based on the first phase}
  \item{cov_Z_bar_1_s0}{the covariance matrix for \code{Z_bar_1_s0}}
  \item{resid_reduced}{the reduced model residuals at either the plot level or cluster level depending on the call}
  \item{resid_full}{the full model residuals at either the plot level or cluster level depending on the call}
@@ -111,11 +111,11 @@ An object of class \code{"threephase"} returns a \code{list} of the following co
 }
 \description{
 \code{threephase} is used to calculate estimations based on triple sampling under the
-\emph{model-assisted Monte Carlo approach}. A \emph{first phase} of auxiliary information
+\emph{model-assisted Monte Carlo approach}. A \emph{zero phase} of auxiliary information
 (e.g. taken from remote sensing data) is used to generate model predictions based on multiple linear
-regression using the method of ordinary least squares. A subsample of the first phase comprises
-a \emph{second phase} which contains further auxiliary information that produces another set of model predictions.
-A further subsample produces a \emph{third final phase} based on terrestrial observations
+regression using the method of ordinary least squares. A subsample of the zero phase comprises
+further auxiliary information that produces another set of model predictions.
+A further subsample produces a \emph{second phase} based on terrestrial observations
 (i.e. the \emph{local densities} of the ground truth) and is used to correct for bias in the design-based sense.
 The estimation method is available for \emph{simple} and \emph{cluster sampling} and includes
 the special case where the first phase is based on an \emph{exhaustive} sample (i.e. a census).
@@ -131,7 +131,7 @@ equivalent version derived under Mandallaz's extended model approach.
          defined within a \code{character} vector using \code{c()}. Using \code{small_area(..., unbiased=FALSE)}
          calculates design-based estimates with the synthetic estimator and may be design-biased if
          the model is biased in that small area.  The default, \code{small_area(..., unbiased=TRUE)}, allows for a residual
-         correction by one of two asympototically equivalent methods to create design-unbiased estimates:
+         correction by one of two asymptotically equivalent methods to create design-unbiased estimates:
          \itemize{
              \item Mandallaz's extended model approach calculates the residual correction by extending the
                    model formula with an indicator variable in the small area.  It is the default method
@@ -150,7 +150,7 @@ equivalent version derived under Mandallaz's extended model approach.
          is equal to the percentage of forested area (e.g. as defined by a forest mask) in the interpretation area.
 
          Exhaustive estimation refers to when the true means of certain auxiliary variables are known
-         and an exhaustive first phase (i.e. a census).  For global estimation, the vector must be input
+         at an exhaustive zero phase (i.e. a census).  For global estimation, the vector must be input
          in the same order that \code{lm} processes a \code{formula} object including the intercept term whose
          true mean will always be one.  For small area estimation, \code{exhaustive} is a \code{data.frame} containing column names for every variable appearing in
          the parameter \code{formula} including the variable "Intercept".  The observations of the data.frame
@@ -353,5 +353,5 @@ Mandallaz, D. (2014). \emph{A three-phase sampling extension of the generalized 
 
 Massey, A. and Mandallaz, D. and Lanz, A. (2014). \emph{Integrating remote sensing and past inventory data under the new annual design of the Swiss National Forest Inventory using three-phase design-based regression estimation.} Can. J. For. Res. 44(10): 1177-1186
 
-Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \url{http://e-collection.library.ethz.ch}.
+Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \url{https://doi.org/10.3929/ethz-a-009990020}.
 }

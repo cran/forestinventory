@@ -34,7 +34,6 @@ global_nonexhaustive2p_cluster <- function(formula, data, phase_id, cluster, bou
 
   # for weighted cluster-means:
   if(!is.na(boundary_weights)){
-    # library(plyr) #* load as dependency ...
     # weight the auxiliary information, but not the response:
     clustmeans.temp<- ddply(data_ext[,-c(which(names(data_ext) == all.vars(formula)[1]))],
                             .(cluster), function(x) colwise(weighted.mean, w = x[[boundary_weights]]) (x))
@@ -50,14 +49,14 @@ global_nonexhaustive2p_cluster <- function(formula, data, phase_id, cluster, bou
 
 
 
-  #This is awkward but we need the s2 design matrix from the cluster-level dataset "data_clust"
+  # we need the s2 design matrix from the cluster-level dataset "data_clust"
   data_clust_s2 <- data_clust_s1_groundindicator[data_clust_s1_groundindicator[[phase_id[["phase.col"]]]]==phase_id[["terrgrid.id"]],] #THIS SHOULD HAVE PHASE_ID AT SOME POINT
   Yc_x <- data_clust_s2[, all.vars(formula)[1]]
   design_matrix.s1 <- data_clust_s1[, -1*c(which(names(data_clust_s1) %in% c(cluster,all.vars(formula)[1])), ncol(data_clust_s1))]
   design_matrix.s2 <- as.matrix(data_clust_s2[, -1*c(which(names(data_clust_s2) %in% c(cluster,all.vars(formula)[1],phase_id[["phase.col"]])), ncol(data_clust_s2)-1)])
 
   M_x.s1 <- data_clust_s1[, ncol(data_clust_s1)]
-  M_x.s2 <- data_clust_s2[, ncol(data_clust_s2)-1]  #this is clunky but the number of columns minus one location of M_x due to the merge order
+  M_x.s2 <- data_clust_s2[, ncol(data_clust_s2)-1] # the number of columns minus one location of M_x due to the merge order
 
   n1_clusters <- length(M_x.s1)
   n2_clusters <- length(Yc_x)

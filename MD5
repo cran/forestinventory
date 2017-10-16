@@ -1,6 +1,6 @@
-c9d5f8d6ecd4eca191596aaf1bed3024 *DESCRIPTION
+14056d926337f1f0f5dcbbb5e8afc79c *DESCRIPTION
 d86ecc92b8e4098c326c1412a266a390 *NAMESPACE
-3a58423c31df6ebf87fb0b003d6e47f8 *NEWS
+675dc0a018bfc85cc003cc1a26149621 *NEWS
 20374d5c9b88dcb199032c6003a98915 *R/boundaryweight_fct_2p3p.R
 b2769c6f22ef561a35bc612e5158c168 *R/boundaryweight_fct_3p_clust.R
 086318e9fce4c4d86d9ef01698fafcb3 *R/confint_methods.R
@@ -32,16 +32,19 @@ d640c4030947c15d3c7a421c58a1a3fd *R/small_area_exhaustive3p_cluster.R
 e28b67a0544121f8d8353e862093e780 *R/small_area_looper_3p.R
 a16898469b82f56ba2d1fd567a6b2cd2 *R/small_area_nonexhaustive2p.R
 b3c5bd2a608147dcc08332d1245ac92f *R/small_area_nonexhaustive2p_cluster.R
-051f319b6b3d512d9bf755b60b445c90 *R/small_area_nonexhaustive3p.R
-d71086921b67c83fb0d3fd2faed43dfb *R/small_area_nonexhaustive3p_cluster.R
+bd5ac78e7b1074240cec050478a58b76 *R/small_area_nonexhaustive3p.R
+2384cf08bb60bbf582852887c76902d7 *R/small_area_nonexhaustive3p_cluster.R
 c99013673c99421117f6102104d66c7b *R/summary_methods.R
 ccac543db0146968c6127b63535d3ca3 *R/threephase.R
 7f3e394fbe71b3763e25fa4708685c66 *R/twophase.R
 6fe1cdc45c35fc3d18b8027b525d2b0a *R/zberg_documentation.R
 a11e8527d6a7cfabf06224cb49c857b9 *README.md
+57d27fb39dc1ccedad922a6cda58f27c *build/vignette.rds
 6d3a4206c619c84df15f2faf356c71d8 *data/grisons.rda
 465abebb98ee59c80c67e763663c37db *data/zberg.rda
 51b7866340a8511010eaf171ab4b2ec5 *inst/CITATION
+fb97cc532b668cbdd8d1f548439f82ff *inst/doc/forestinventory_vignette.pdf
+4a013689bf9f93fee17f83bb5c58baf6 *inst/doc/forestinventory_vignette.pdf.asis
 bfbc354703fad4bfe187d565317b4bc5 *man/confint.Rd
 f00b4d42c9f59ae8eb7507c4c3ce1eea *man/estTable.Rd
 0ef0a9712e83b24957f4892ea85df55b *man/forestinventory.Rd
@@ -53,3 +56,4 @@ c4be87b598e48209ef4635b8166b2d0d *man/onephase.Rd
 5c891018db9fb16d00dccd9264483ba7 *man/threephase.Rd
 f73e90ad48cbbdcb4dfaf56090983c27 *man/twophase.Rd
 5e8444cf24532bd053246526c3afa254 *man/zberg.Rd
+4a013689bf9f93fee17f83bb5c58baf6 *vignettes/forestinventory_vignette.pdf.asis

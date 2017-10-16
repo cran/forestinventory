@@ -194,9 +194,10 @@ small_area_nonexhaustive3p<- function(formula.s0, formula.s1, data, phase_id, sm
                (1 - (n2/n1)) * (t(Z_bar_s1G) %*% cov_beta_s2 %*% Z_bar_s1G)
 
 
-  # external variance:
-  ext_variance<- (1 / n0G) * var( design_matrix_1.s0G  %*% alpha ) +
-                 (1 / n1G) * var(resid_reduced_G) +
+  # external variance (that does not assume orthogonality of predictions and residuals):
+  Yx_G<- model.object.reduced$y[s2G.in.modobject.ind]
+  ext_variance<- (1 / n0G) * var(Yx_G) +
+                 (1 - (n1G/n0G))*(1 / n1G) * var(resid_reduced_G) +
                  (1 - (n2G/n1G)) * (1/n2G) * var(resid_full_G)
 
 

@@ -2,8 +2,8 @@ Package: forestinventory
 Type: Package
 Title: Design-Based Global and Small-Area Estimations for Multiphase
         Forest Inventories
-Version: 0.3.0
-Date: 2017-10-03
+Version: 0.3.1
+Date: 2017-10-16
 Authors@R: c(person(given = c("Andreas"), family = "Hill",
                      email = "andreas.hill@usys.ethz.ch", role = c("aut","cre")),
               person(given = c("Alexander"), family = "Massey",
@@ -24,11 +24,13 @@ Description: Extensive global and small-area estimation procedures for multiphas
 License: GPL (>= 2)
 LazyData: TRUE
 Imports: plyr (>= 1.8.3), stats, utils, tidyr, ggplot2
+Suggests: R.rsp
+VignetteBuilder: R.rsp
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-10-03 13:41:16 UTC; hilla
+Packaged: 2017-10-16 13:41:52 UTC; hilla
 Author: Andreas Hill [aut, cre],
   Alexander Massey [aut],
   Daniel Mandallaz [ctb]
 Repository: CRAN
-Date/Publication: 2017-10-03 13:50:14 UTC
+Date/Publication: 2017-10-16 13:55:38 UTC

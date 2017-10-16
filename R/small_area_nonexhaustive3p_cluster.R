@@ -406,8 +406,8 @@ small_area_nonexhaustive3p_cluster<- function(formula.s0, formula.s1, data, phas
                (1 - (n2_clusters / n1_clusters)) * (Z_bar_s1G %*% cov_beta_s2 %*% Z_bar_s1G)
 
   # external variance:
-  ext_variance<- ( 1 / (n0G_clusters * (n0G_clusters - 1))) * sum( ((M_x.s0G / mean(M_x.s0G))^2) * ((  (design_matrix_1.s0G %*% alpha) - mean(Yc_1_x_hat_s2G))^2) ) +
-                 ( 1 / (n1G_clusters * (n2G_clusters - 1))) * sum( ((M_x.s2G / mean(M_x.s2G))^2) * ((Rc_1_x_hat_G - mean_Rc_1_x_hat_G)^2) ) +
+  ext_variance<- ( 1 / (n0G_clusters * (n2G_clusters - 1))) * sum( ((M_x.s2G / mean(M_x.s2G))^2) * ((Yc_x_G - mean(Yc_x_G))^2) ) +
+                 ( 1 - (n1G_clusters/n0G_clusters)) * ( 1 / (n1G_clusters * (n2G_clusters - 1))) * sum( ((M_x.s2G / mean(M_x.s2G))^2) * ((Rc_1_x_hat_G - mean_Rc_1_x_hat_G)^2) ) +
                  ( 1 - (n2G_clusters/n1G_clusters)) * ( 1 / (n2G_clusters * (n2G_clusters - 1))) * sum( ((M_x.s2G / mean(M_x.s2G))^2) * ((Rc_x_hat_G - mean_Rc_x_hat_G)^2) )
 
 

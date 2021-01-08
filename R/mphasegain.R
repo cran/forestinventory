@@ -51,7 +51,7 @@
 #'
 #' % @example examples/example_mphasegain.R
 #'
-#' @import plyr
+#' @import methods
 #' @export
 
 
@@ -62,9 +62,16 @@
 mphase.gain<- function(esttable.obj, pref.vartype = "g_variance", exclude.synth = TRUE){
 
   # check input:
-  if(!class(esttable.obj)[2] == "esttable"){stop("'mphase.gain()' expects an 'esttable' object created by 'estTable()'")}
+  if(!is(esttable.obj, "esttable")){stop("'mphase.gain()' expects an 'esttable' object created by 'estTable()'")}
 
-  getclass<- class(esttable.obj)
+  if(is(esttable.obj, "global")){
+    etype<- "global"
+  }
+
+  if(is(esttable.obj, "smallarea")){
+    etype<- "smallarea"
+  }
+
 
   # convert esttable-object into data.frame:
   esttable.obj<- as.data.frame(esttable.obj)
@@ -113,12 +120,12 @@ mphase.gain<- function(esttable.obj, pref.vartype = "g_variance", exclude.synth 
   }
   # -------- #
 
-  if(getclass[3]=="global"){
+  if(etype == "global"){
     # apply closure:
       return(prec.gain(esttable.obj))
   }
 
-  if(getclass[3]=="smallarea"){
+  if(etype == "smallarea"){
     # apply closure:
       return(ddply(esttable.obj,"area", prec.gain))
   }

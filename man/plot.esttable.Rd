@@ -4,14 +4,13 @@
 \alias{plot.esttable}
 \title{Plotting Estimation Results}
 \usage{
-\method{plot}{esttable}(x, yvar = "error", ncol = 5, yscale.free = TRUE,
-  ...)
+\method{plot}{esttable}(x, yvar = "error", ncol = 5, yscale.free = TRUE, ...)
 }
 \arguments{
 \item{x}{object of class \code{"list" "esttable"} created by the \code{\link{estTable}} function.}
 
 \item{yvar}{if set to \code{"error"} (default), the estimation error is plotted on the y-axis. If set to \code{"estimate"},
-point estimates with their confidene intervals are plotted.}
+point estimates with their confidence intervals are plotted.}
 
 \item{ncol}{number of columns to plot small area estimations.}
 

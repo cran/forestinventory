@@ -25,7 +25,7 @@
 #'}
 #'
 #'
-#'@note There are additional columns in \code{grisons} to demonstrate the function-behaviours
+#'@note There are additional columns in \code{grisons} to demonstrate the function-behaviors
 #'      for special cases which might occur in a forest inventory
 #'\itemize{
 #'  \item{\code{phase_id_3p_nG0} one of the smallareas does not contain any terrestrial observation.}

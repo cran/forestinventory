@@ -9,3 +9,6 @@ fixed bug in confidence interval calculation for pseudosynthetic estimator under
 New features: analysis functions and visualization functions added
 16-10-17  forestinventory Version 0.3.1 released to CRAN!
 New features: vignette added
+04-01-21  forestinventory Version 1.0.0 released to CRAN!
+Version of published article in the Journal of Statistical Software (JSS)
+Includes few code-refinements as result of the intense JSS-review-process

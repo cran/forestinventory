@@ -4,7 +4,9 @@
 \name{grisons}
 \alias{grisons}
 \title{Data from a multiphase forest inventory in the canton of Grisons, Switzerland}
-\format{data frame with 306 rows and 14 columns}
+\format{
+data frame with 306 rows and 14 columns
+}
 \source{
 The terrestrial data are kindly provided by the forest service of the canton grisons.
 
@@ -40,7 +42,7 @@ has been artificially extended to a threephase inventory for demonstration purpo
 }
 }
 \note{
-There are additional columns in \code{grisons} to demonstrate the function-behaviours
+There are additional columns in \code{grisons} to demonstrate the function-behaviors
      for special cases which might occur in a forest inventory
 \itemize{
  \item{\code{phase_id_3p_nG0} one of the smallareas does not contain any terrestrial observation.}

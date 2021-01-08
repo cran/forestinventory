@@ -4,8 +4,13 @@
 \alias{onephase}
 \title{onephase}
 \usage{
-onephase(formula, data, phase_id = list(phase.col = NA, terrgrid.id = NA),
-  cluster = NA, area = list(sa.col = NA, areas = NA))
+onephase(
+  formula,
+  data,
+  phase_id = list(phase.col = NA, terrgrid.id = NA),
+  cluster = NA,
+  area = list(sa.col = NA, areas = NA)
+)
 }
 \arguments{
 \item{formula}{an object of class "\code{\link[stats]{formula}}" that
@@ -119,5 +124,7 @@ summary(op.clust.a)
 confint(op.clust.a)
 }
 \references{
+Hill, A., Massey, A. F. (2021). \emph{The R Package forestinventory: Design-Based Global and Small Area Estimations for Multiphase Forest Inventories.} Journal of Statistical Software, 97(4), 1-40.
+
 Mandallaz, D. (2007). \emph{Sampling techniques for forest inventories.} Chapter 4. CRC Press.
 }

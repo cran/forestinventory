@@ -1,5 +1,5 @@
 
-
+#' @import methods
 
 #' @export
 print.onephase<- function(x, ...){
@@ -36,8 +36,7 @@ print.twophase<- function(x, ...){
 
   # --------------------------------#
   # summary for twophase-smallarea:
-
-  if(class(x)[1]=="smallarea"){ # if class(x) is c("smallarea", "twophase")
+  if(is(x, "smallarea") & inherits(x, "twophase")){ # if class(x) is c("smallarea", "twophase")
 
     cat("\n")
     cat("Two-phase small area estimation")
@@ -91,7 +90,7 @@ print.twophase<- function(x, ...){
   # ------------------------------#
   # print for twophase-global:
 
-  if(class(x)[1]=="global"){ # if class(x) is c("global", "twophase")
+  if(is(x, "global") & inherits(x, "twophase")){# if class(x) is c("global", "twophase")
 
     cat("\n")
     cat("Two-phase global estimation")
@@ -141,7 +140,7 @@ print.threephase<- function(x, ...){
   # --------------------------------#
   # summary for threephase-smallarea:
 
-  if(class(x)[1]=="smallarea"){
+  if(is(x, "smallarea") & inherits(x, "threephase")){ # if class(x) is c("smallarea", "threephase")
 
     cat("\n")
     cat("Three-phase small area estimation")
@@ -195,7 +194,8 @@ print.threephase<- function(x, ...){
   # --------------------------------#
   # summary for threephase-global:
 
-  if(class(x)[1]=="global"){
+  if(is(x, "global") & inherits(x, "threephase")){ # if class(x) is c("global", "threephase")
+
 
     cat("\n")
     cat("Three-phase global estimation")

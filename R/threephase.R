@@ -11,7 +11,7 @@
 #' the special case where the first phase is based on an \emph{exhaustive} sample (i.e. a census).
 #' \emph{Small-area applications} are supported for synthetic estimation as well as two varieties
 #' of bias-corrected estimators: the traditional small-area estimator and an asymptotically
-#' equivalent version derived under Mandallaz's extended model approach.
+#' equivalent version derived under Mandallaz' extended model approach.
 #'
 #' @param formula.s0 an object of class "\code{\link[stats]{formula}}" as would be used in the function \code{\link[stats]{lm}}
 #'                   that contains a reduced set of auxiliary variables available for all zero phase plots
@@ -81,7 +81,7 @@
 #'          the model is biased in that small area.  The default, \code{small_area(..., unbiased=TRUE)}, allows for a residual
 #'          correction by one of two asymptotically equivalent methods to create design-unbiased estimates:
 #'          \itemize{
-#'              \item Mandallaz's extended model approach calculates the residual correction by extending the
+#'              \item Mandallaz' extended model approach calculates the residual correction by extending the
 #'                    model formula with an indicator variable in the small area.  It is the default method
 #'                    \code{psmall}=FALSE.
 #'              \item the traditional small area estimator calculates the residual correction by taking the
@@ -152,12 +152,13 @@
 #' The reported \code{r.squared_reduced} and \code{r.squared_full} describe the model fit of the applied linear regression
 #' models (i.e. on \emph{plot-level}, not on \emph{cluster level}).
 #'
+#' @references Hill, A., Massey, A. F. (2021). \emph{The R Package forestinventory: Design-Based Global and Small Area Estimations for Multiphase Forest Inventories.} Journal of Statistical Software, 97(4), 1-40.
 #' @references Mandallaz, D., Breschan, J., & Hill, A. (2013). \emph{New regression estimators in forest inventories
 #' with two-phase sampling and partially exhaustive information: a design-based monte carlo approach
 #' with applications to small-area estimation.} Canadian Journal of Forest Research, 43(11), 1023-1031.
 #' @references Mandallaz, D. (2014). \emph{A three-phase sampling extension of the generalized regression estimator with partially exhaustive information.} Can. J. For. Res. 44: 383-388
 #' @references Massey, A. and Mandallaz, D. and Lanz, A. (2014). \emph{Integrating remote sensing and past inventory data under the new annual design of the Swiss National Forest Inventory using three-phase design-based regression estimation.} Can. J. For. Res. 44(10): 1177-1186
-#' @references Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \url{https://doi.org/10.3929/ethz-a-009990020}.
+#' @references Mandallaz, D. (2013). \emph{Regression estimators in forest inventories with three-phase sampling and two multivariate components of auxiliary information.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \doi{10.3929/ethz-a-009990020}.
 #'
 #' @example examples/example_threephase_estimations_long.R
 #'

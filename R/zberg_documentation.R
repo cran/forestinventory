@@ -14,7 +14,7 @@
 #'  \item{\code{phase_id_3p} the phase-membership of each observation for the threephase inventory,
 #'                           i.e. the first phase (\code{0}), the second phase (\code{1})
 #'                           and third (terrestrial) phase (\code{2}). \emph{Note:} The threephase sample scheme
-#'                           was artificially created for demsontration purposes of the
+#'                           was artificially created for demonstration purposes of the
 #'                           \code{\link{threephase}}-functions.}
 #'  \item{\code{stade}       development stage at sample plot location based on the stand map.
 #'                           Categorical variable of class \code{factor} with 4 \code{levels}.}
@@ -22,8 +22,8 @@
 #'                           Categorical variable of class \code{factor} with 2 \code{levels}.}
 #'  \item{\code{couver}      crown-coverage at sample plot location based on the stand map.
 #'                           Categorical variable of class \code{factor} with 2 \code{levels}.}
-#'  \item{\code{stem}        stem number dervied at field survey.}
-#'  \item{\code{basal}       basal area dervied at field survey.}
+#'  \item{\code{stem}        stem number derived at field survey.}
+#'  \item{\code{basal}       basal area derived at field survey.}
 #'  \item{\code{ismallg23}   indicator for small area 2 and 3 for each observation.}
 #'  \item{\code{ismallold}   indicator for small area 1 for each observation.}
 #'}

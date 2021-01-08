@@ -4,8 +4,12 @@
 \alias{estTable}
 \title{estTable}
 \usage{
-estTable(est.list, sae = FALSE, add.ci = TRUE, vartypes = c("variance",
-  "ext_variance", "g_variance"))
+estTable(
+  est.list,
+  sae = FALSE,
+  add.ci = TRUE,
+  vartypes = c("variance", "ext_variance", "g_variance")
+)
 }
 \arguments{
 \item{est.list}{a \code{\link[base]{list}} object containing at least one multiphase estimation object created by
@@ -16,7 +20,7 @@ Defaults to \code{FALSE}.}
 
 \item{add.ci}{\code{logical}: Should confidence intervals be added? Defaults to \code{TRUE}.}
 
-\item{vartypes}{Specifiying the variances that should be included in the estimation table. Has to be specified as a \code{character} vector. The full set
+\item{vartypes}{Specifying the variances that should be included in the estimation table. Has to be specified as a \code{character} vector. The full set
 contains \code{"variance"}, \code{"ext_variance"} and \code{"g_variance"}.}
 }
 \value{

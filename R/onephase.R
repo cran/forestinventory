@@ -70,8 +70,9 @@
 #'                    }}
 #'  \item{samplesizes}{a named numeric vector giving the terrestrial samplesize}
 #'
-#'
+#' @references Hill, A., Massey, A. F. (2021). \emph{The R Package forestinventory: Design-Based Global and Small Area Estimations for Multiphase Forest Inventories.} Journal of Statistical Software, 97(4), 1-40.
 #' @references Mandallaz, D. (2007). \emph{Sampling techniques for forest inventories.} Chapter 4. CRC Press.
+
 #'
 #' @example examples/example_onephase_estimations.R
 #'

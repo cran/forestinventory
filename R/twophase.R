@@ -10,7 +10,7 @@
 #' the special case where the first phase is based on an \emph{exhaustive} sample (i.e. a census).
 #' \emph{Small-area applications} are supported for synthetic estimation as well as two varieties
 #' of bias-corrected estimators: the traditional small-area estimator and an asymptotically
-#' equivalent version derived under Mandallaz's extended model approach.
+#' equivalent version derived under Mandallaz' extended model approach.
 #'
 #' @param formula an object of class "\code{\link[stats]{formula}}" as would be used in the function \code{\link[stats]{lm}}
 #'
@@ -68,9 +68,9 @@
 #'          defined within a \code{character} vector using \code{c()}. Using \code{small_area(..., unbiased=FALSE)}
 #'          calculates design-based estimates with the synthetic estimator and may be design-biased if
 #'          the model is biased in that small area.  The default, \code{small_area(..., unbiased=TRUE)}, allows for a residual
-#'          correction by one of two asympototically equivalent methods to create design-unbiased estimates:
+#'          correction by one of two asymptotically equivalent methods to create design-unbiased estimates:
 #'          \itemize{
-#'              \item Mandallaz's extended model approach calculates the residual correction by extending the
+#'              \item Mandallaz' extended model approach calculates the residual correction by extending the
 #'                    model formula with an indicator variable in the small area.  It is the default method
 #'                    \code{psmall}=FALSE.
 #'              \item the traditional small area estimator calculates the residual correction by taking the
@@ -115,7 +115,7 @@
 #'                    \item \code{r.squared} the R squared of the linear model
 #'                    }}
 #'  \item{samplesizes}{a \code{\link[base]{data.frame}} summarizing all samplesizes: in case of cluster sampling both,
-#'                     the number of individual plots and the nuber of clusters is reported.}
+#'                     the number of individual plots and the number of clusters is reported.}
 #'  \item{coefficients}{the linear model coefficients}
 #'  \item{cov_coef}{the design-based covariance matrix of the model coefficients}
 #'  \item{Z_bar_1G}{the estimated auxiliary means of \code{formula} based on the first phase.
@@ -135,6 +135,7 @@
 #' The reported \code{r.squared} describe the model fit of the applied linear regression
 #' model (i.e. on \emph{plot-level}, not on \emph{cluster level}).
 #'
+#' @references Hill, A., Massey, A. F. (2021). \emph{The R Package forestinventory: Design-Based Global and Small Area Estimations for Multiphase Forest Inventories.} Journal of Statistical Software, 97(4), 1-40.
 #' @references Mandallaz, D. (2007). \emph{Sampling techniques for forest inventories.} Chapter 4. CRC Press.
 #' @references Mandallaz, D. (2013). \emph{Design-based properties of some small-area estimators in forest inventory with two-phase sampling.} Can. J. For. Res. 43: 441-449
 #' @references Mandallaz, D. and Hill, A. and Massey, A. (2016). \emph{Design-based properties of some small-area estimators in forest inventory with two-phase sampling.} ETH Zurich, Department of Environmental Systems Science,Tech. rep. Available from \url{http://e-collection.library.ethz.ch}.

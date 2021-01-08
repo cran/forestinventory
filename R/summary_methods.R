@@ -12,6 +12,7 @@ NULL
 
 
 #' @rdname summary
+#' @import methods
 #' @export
 summary.onephase<- function(object, coefs=FALSE, ...){
   # print-method for one-phase small area outputs
@@ -44,6 +45,7 @@ summary.onephase<- function(object, coefs=FALSE, ...){
 
 
 #' @rdname summary
+#' @import methods
 #' @export
 summary.twophase<- function(object, coefs=FALSE, ...){
   # summary for small area estimations:
@@ -53,7 +55,7 @@ summary.twophase<- function(object, coefs=FALSE, ...){
   # --------------------------------#
   # summary for twophase-smallarea:
 
-  if(class(object)[1]=="smallarea"){ # if class(sae_obj) is c("smallarea", "twophase")
+  if(is(object, "smallarea")){ # if class(sae_obj) is c("smallarea", "twophase")
 
     cat("\n")
     cat("Two-phase small area estimation")
@@ -121,7 +123,7 @@ summary.twophase<- function(object, coefs=FALSE, ...){
   # ------------------------------#
   # summary for twophase-global:
 
-  if(class(object)[1]=="global"){ # if class(sae_obj) is c("global", "twophase")
+  if(is(object, "global")){ # if class(sae_obj) is c("global", "twophase")
 
     cat("\n")
     cat("Two-Phase global estimation")
@@ -180,6 +182,7 @@ summary.twophase<- function(object, coefs=FALSE, ...){
 
 
 #' @rdname summary
+#' @import methods
 #' @export
 summary.threephase<- function(object, coefs=FALSE, ...){
   # summary for threephase estimations:
@@ -189,7 +192,7 @@ summary.threephase<- function(object, coefs=FALSE, ...){
   # --------------------------------#
   # summary for threephase-smallarea:
 
-  if(class(object)[1]=="smallarea"){
+  if(is(object, "smallarea")){ # if class(sae_obj) is c("smallarea", "threephase")
 
     cat("\n")
     cat("Three-phase small area estimation")
@@ -269,7 +272,7 @@ summary.threephase<- function(object, coefs=FALSE, ...){
   # --------------------------------#
   # summary for threephase-global:
 
-  if(class(object)[1]=="global"){
+  if(is(object, "global")){ # if class(sae_obj) is c("global", "threephase")
 
     cat("\n")
     cat("Three-phase global estimation")

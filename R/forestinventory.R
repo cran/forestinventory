@@ -27,11 +27,14 @@
 #' collection of state-of-the-art \emph{design-based} estimation techniques for forest inventories.
 #' It was especially designed to facilitate the application of the available estimators
 #' in forest practice as well as in scientifically related studies. The work on this
-#' package was also the trigger to complete the range of the allready published estimators,
+#' package was also the trigger to complete the range of the already published estimators,
 #' especially in the framework of three-phase smallarea estimators.
 #'
 #'
 #'@section Selected references:
+#'
+#' Hill, A., Massey, A. F. (2021). \emph{The R Package forestinventory: Design-Based Global and Small
+#' Area Estimations for Multiphase Forest Inventories.} Journal of Statistical Software, 97(4), 1-40.
 #'
 #' Massey, A. F. (2015). \emph{Multiphase estimation procedures for forest inventories under
 #' the design-based Monte Carlo approach} (Doctoral dissertation, Diss., ETH Zurich, Nr. 23025).

@@ -23,7 +23,7 @@
 #' @param sae an object of type \code{\link[base]{logical}}. Has to be set to \code{TRUE} if results of small area estimations are passed to \code{estTable}.
 #'        Defaults to \code{FALSE}.
 #'
-#' @param vartypes Specifiying the variances that should be included in the estimation table. Has to be specified as a \code{character} vector. The full set
+#' @param vartypes Specifying the variances that should be included in the estimation table. Has to be specified as a \code{character} vector. The full set
 #'                 contains \code{"variance"}, \code{"ext_variance"} and \code{"g_variance"}.
 #'
 #'
@@ -141,7 +141,8 @@ estTable<- function(est.list, sae=FALSE, add.ci=TRUE,
     }
 
     # Restructure dataframe:
-      cdat<- gather_(data = dn, key_col = "vartype", value_col="variance", gather_cols=c("ext_variance", "g_variance", "variance"))
+      # cdat.old<- gather_(data = dn, key_col = "vartype", value_col="variance", gather_cols=c("ext_variance", "g_variance", "variance"))
+      cdat<- as.data.frame(pivot_longer(data = dn, cols = c("ext_variance", "g_variance", "variance"), names_to = "vartype", values_to = "variance"))
       cdat$vartype<- as.factor(cdat$vartype)
       cdat<- cdat[!is.na(cdat$variance), ]
       # calculate and add estimation error in [%]:
@@ -163,10 +164,13 @@ estTable<- function(est.list, sae=FALSE, add.ci=TRUE,
 
 
     if(add.ci){
-      cdat.ci<- gather_(data = dn, key_col = "vartype", value_col="value",
-                     gather_cols=c("ci_lower_op", "ci_upper_op", "ci_lower_ext", "ci_upper_ext", "ci_lower_g", "ci_upper_g"))
-      cdat.ci<- extract_(data=cdat.ci, col= "vartype", into=c("question","vartype"), regex="(c._.....)\\_(.*)")
-      cdat.ci<- spread_(data = cdat.ci, key_col="question", value_col = "value")
+     # cdat.ci<- gather_(data = dn, key_col = "vartype", value_col="value",
+     #             gather_cols=c("ci_lower_op", "ci_upper_op", "ci_lower_ext", "ci_upper_ext", "ci_lower_g", "ci_upper_g"))
+     cdat.ci<- as.data.frame(pivot_longer(data = dn, cols = c("ci_lower_op", "ci_upper_op", "ci_lower_ext", "ci_upper_ext", "ci_lower_g", "ci_upper_g"),
+                                           names_to = "vartype", values_to = "value"))
+     cdat.ci<- extract(data=cdat.ci, col= "vartype", into=c("question","vartype"), regex="(c._.....)\\_(.*)")
+     # cdat.ci<- spread_(data = cdat.ci, key_col="question", value_col = "value")
+     cdat.ci<- as.data.frame(pivot_wider(data = cdat.ci, names_from = "question", values_from = "value"))
 
       cdat.ci$vartype[cdat.ci$vartype=="op"]<- "variance"
       cdat.ci$vartype[cdat.ci$vartype=="ext"]<- "ext_variance"
@@ -188,8 +192,7 @@ estTable<- function(est.list, sae=FALSE, add.ci=TRUE,
     # restrict to certain variance-types:
     cdat<- cdat[cdat$vartype %in% vartypes,]
 
-    class(cdat)<- c("list", "esttable", "smallarea")
-
+    class(cdat)<- c("smallarea", "esttable", "list")
     return(cdat)
 
   } # end of "long"-formatting sae-objects
@@ -235,7 +238,9 @@ estTable<- function(est.list, sae=FALSE, add.ci=TRUE,
     }
 
     # Restructure dataframe:
-      cdat<- gather_(data = dn, key_col = "vartype", value_col="variance", gather_cols=c("ext_variance", "g_variance", "variance"))
+      # cdat<- gather_(data = dn, key_col = "vartype", value_col="variance", gather_cols=c("ext_variance", "g_variance", "variance"))
+      cdat<- as.data.frame(pivot_longer(data = dn, cols = c("ext_variance", "g_variance", "variance"), names_to = "vartype", values_to = "variance"))
+
       cdat$vartype<- as.factor(cdat$vartype)
       cdat<- cdat[!is.na(cdat$variance), ]
       # calculate and add estimation error in [%]:
@@ -247,10 +252,15 @@ estTable<- function(est.list, sae=FALSE, add.ci=TRUE,
                    "n2", "n2G", "n1", "n1G", "n0", "n0G", "r.squared", "r.squared_reduced", "r.squared_full")
 
     if(add.ci){
-      cdat.ci<- gather_(data = dn, key_col = "vartype", value_col="value",
-                     gather_cols=c("ci_lower_op", "ci_upper_op", "ci_lower_ext", "ci_upper_ext", "ci_lower_g", "ci_upper_g"))
-      cdat.ci<- extract_(data=cdat.ci, col= "vartype", into=c("question","vartype"), regex="(c._.....)\\_(.*)")
-      cdat.ci<- spread_(data = cdat.ci, key_col="question", value_col = "value")
+      # cdat.ci<- gather_(data = dn, key_col = "vartype", value_col="value",
+      #                gather_cols=c("ci_lower_op", "ci_upper_op", "ci_lower_ext", "ci_upper_ext", "ci_lower_g", "ci_upper_g"))
+      # cdat.ci<- extract(data=cdat.ci, col= "vartype", into=c("question","vartype"), regex="(c._.....)\\_(.*)")
+      # cdat.ci<- spread_(data = cdat.ci, key_col="question", value_col = "value")
+      cdat.ci<- as.data.frame(pivot_longer(data = dn, cols = c("ci_lower_op", "ci_upper_op", "ci_lower_ext", "ci_upper_ext", "ci_lower_g", "ci_upper_g"),
+                                           names_to = "vartype", values_to = "value"))
+      cdat.ci<- extract(data=cdat.ci, col= "vartype", into=c("question","vartype"), regex="(c._.....)\\_(.*)")
+      cdat.ci<- as.data.frame(pivot_wider(data = cdat.ci, names_from = "question", values_from = "value"))
+
 
       cdat.ci$vartype[cdat.ci$vartype=="op"]<- "variance"
       cdat.ci$vartype[cdat.ci$vartype=="ext"]<- "ext_variance"
@@ -271,7 +281,7 @@ estTable<- function(est.list, sae=FALSE, add.ci=TRUE,
     # restrict to certain variance-types:
     cdat<- cdat[cdat$vartype %in% vartypes,]
 
-    class(cdat)<- c("list", "esttable", "global")
+    class(cdat)<- c("global", "esttable", "list")
 
     return(cdat)
 

@@ -7,7 +7,7 @@
 #' @param x object of class \code{"list" "esttable"} created by the \code{\link{estTable}} function.
 #'
 #' @param yvar if set to \code{"error"} (default), the estimation error is plotted on the y-axis. If set to \code{"estimate"},
-#'        point estimates with their confidene intervals are plotted.
+#'        point estimates with their confidence intervals are plotted.
 #' @param ncol number of columns to plot small area estimations.
 #' @param yscale.free \code{logical}: should y-axis scales be free (default) or fixed.
 #' @param ... ignored.
@@ -16,12 +16,22 @@
 #' @example examples/example_plot_estTable.R
 #'
 #' @import ggplot2
+#' @import methods
 #' @export
 
 plot.esttable<- function(x, yvar="error", ncol=5, yscale.free=TRUE,...){
 
+  # check input:
+  if(!is(x, "esttable")){stop("'mphase.gain()' expects an 'esttable' object created by 'estTable()'")}
 
-  getclass<- class(x)
+  if(is(x, "global")){
+    etype<- "global"
+  }
+
+  if(is(x, "smallarea")){
+    etype<- "smallarea"
+  }
+
 
   dat<- as.data.frame(x)
 
@@ -59,7 +69,7 @@ plot.esttable<- function(x, yvar="error", ncol=5, yscale.free=TRUE,...){
 
 
     # ************************* #
-    if(getclass[3]=="global"){
+    if(etype =="global"){
 
       p<-  ggplot(data = dat, aes_q(x=quote(method), y=quote(error), fill=quote(methest))) +
         geom_bar(colour="black", stat="identity", position=position_dodge()) +
@@ -69,7 +79,7 @@ plot.esttable<- function(x, yvar="error", ncol=5, yscale.free=TRUE,...){
 
 
     # ************************* #
-    if(getclass[3]=="smallarea"){
+    if(etype =="smallarea"){
 
       if(yscale.free){scaleset<- "free_y"}
       if(!yscale.free){scaleset<- "fixed"}
@@ -89,7 +99,7 @@ plot.esttable<- function(x, yvar="error", ncol=5, yscale.free=TRUE,...){
   if(yvar=="estimate"){
 
     # ************************* #
-    if(getclass[3]=="global"){
+    if(etype == "global"){
 
       p<- ggplot(data=dat, aes_q(x=quote(method), y=quote(estimate), fill=quote(methest))) +
         geom_bar(colour="black", stat="identity", position=position_dodge()) +
@@ -100,7 +110,7 @@ plot.esttable<- function(x, yvar="error", ncol=5, yscale.free=TRUE,...){
 
 
     # ************************* #
-    if(getclass[3]=="smallarea"){
+    if(etype == "smallarea"){
 
       if(yscale.free){scaleset<- "free_y"}
       if(!yscale.free){scaleset<- "fixed"}

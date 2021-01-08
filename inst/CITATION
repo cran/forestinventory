@@ -1,16 +1,18 @@
-citHeader("To cite 'forestinventory' in publications use:")
+bibentry(bibtype = "Article",
+  title        = "The {R} Package {forestinventory}: Design-Based Global and Small Area Estimations for Multiphase Forest Inventories",
+  author       = c(person(given = "Andreas",
+                          family = "Hill",
+                          email = "andreas.hill@wald-rlp.de"),
+                   person(given = "Alexander",
+                          family = "Massey",
+                          email = "stats.massey@gmail.com")),
+  journal      = "Journal of Statistical Software",
+  year         = "2021",
+  volume       = "97",
+  number       = "4",
+  pages        = "1--40",
+  doi          = "10.18637/jss.v097.i04",
 
-year<- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
-
-citEntry(entry = "Manual",
-         title = "forestinventory: Design-based global and small-area estimations for multiphase forest inventories. R package version 0.2.0",
-         author = c(
-                     person("Andreas", "Hill",       email = "andreas.hill@usys.ethz.ch", role = "cre"),
-                     person("Alexander", "Massey",   email = "afmass@gmail.com", role = "aut"),
-                     person("Daniel", "Mandallaz",                                     role = "ctb")
-                   ),
-         year = "2017",
-         textVersion =
-           paste("Andreas Hill, Alexander Massey, Daniel Mandallaz (2017).",
-                 "forestinventory: Design-based global and small-area estimations for multiphase forest inventories. R package version 0.2.0")
+  header       = "To cite forestinventory in publications use:"
 )
+

@@ -1,10 +1,25 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 forestinventory
 ===============
 
-The R-package `forestinventory` adresses the current interest of combining existing forest inventory data, which are derived by field surveys, with additional information sources such as remote sensing data. The major benefit of these so-called *multisource inventory methods* is the potential increase of estimation precision without an increase in the number of expensive field surveys. Additionally, it also allows for deriving estimates of sufficient accuracy for spatial units where terrestrial information is scarcely available if not absent.
+The R-package `forestinventory` addresses the current interest of
+combining existing forest inventory data, which are derived by field
+surveys, with additional information sources such as remote sensing
+data. The major benefit of these so-called *multisource inventory
+methods* is the potential increase of estimation precision without an
+increase in the number of expensive field surveys. Additionally, it also
+allows for deriving estimates of sufficient accuracy for spatial units
+where terrestrial information is scarcely available if not absent.
 
-The aim of `forestinventory` is to facilitate the application of multiphase forest inventories by providing an extensive set of functions for global and small-area estimation procedures. The implementation includes all estimators for simple and cluster sampling published by Daniel Mandallaz between 2007 and 2014, providing point estimates, their external- and design-based variances as well as confidence intervals. The procedures have also been optimized for the use of remote sensing data as auxiliary information.
+The aim of `forestinventory` is to facilitate the application of
+multiphase forest inventories by providing an extensive set of functions
+for global and small-area estimation procedures. The implementation
+includes all estimators for simple and cluster sampling published by
+Daniel Mandallaz between 2007 and 2014, providing point estimates, their
+external- and design-based variances as well as confidence intervals.
+The procedures have also been optimized for the use of remote sensing
+data as auxiliary information.
 
 Quick demo
 ==========
@@ -16,9 +31,15 @@ library(forestinventory)
 ?grisons
 ```
 
-As the help tells us, `grisons` contains the data of a twophase inventory: We are provided with LiDAR canopy height metrics at 306 inventory locations, and at 67 subsamples we have the terrestrially measured timber volume values. We now want to estimate the timber volume in m<sup>3</sup>/ha within four subdomains A, B, C and D (*small areas*).
+As the help tells us, `grisons` contains the data of a twophase
+inventory: We are provided with LiDAR canopy height metrics at 306
+inventory locations, and at 67 subsamples we have the terrestrially
+measured timber volume values. We now want to estimate the timber volume
+in m<sup>3</sup>/ha within four subdomains A, B, C and D (*small
+areas*).
 
-If we only use the terrestrial information within the small areas, we call the `onephase`-function:
+If we only use the terrestrial information within the small areas, we
+call the `onephase`-function:
 
 ``` r
 op <- onephase(formula = tvol~1,
@@ -46,7 +67,11 @@ summary(op)
 #>     D 396.8496 2290.652 16
 ```
 
-We now try to increase the precision of our estimates by applying a *twophase estimation method*, where we use the large sample of LiDAR-metrics and a linear regression model to specify the relationship between the remote sensing derived predictor variables and the terrestrial timber volume:
+We now try to increase the precision of our estimates by applying a
+*twophase estimation method*, where we use the large sample of
+LiDAR-metrics and a linear regression model to specify the relationship
+between the remote sensing derived predictor variables and the
+terrestrial timber volume:
 
 ``` r
 sae.2p.uv<- twophase(formula = tvol ~ mean + stddev + max + q75, data = grisons,
@@ -78,7 +103,10 @@ summary(sae.2p.uv)
 #>     D 371.0596    1272.7056   1112.735 306 67  65  16 0.6556178
 ```
 
-We now want to compare the results and performances of the onephase and twophase method. For such issues, the package provides the `estTable()` function that concatenates the results from the different methods in one `list`:
+We now want to compare the results and performances of the onephase and
+twophase method. For such issues, the package provides the `estTable()`
+function that concatenates the results from the different methods in one
+`list`:
 
 ``` r
 sae.table<- estTable(est.list = list(op, sae.2p.uv), sae = TRUE)
@@ -99,9 +127,11 @@ data.frame(sae.table[c(1:6,9)])
 #> 12    D smallarea twophase psynth extended   g_variance 371.0596  8.99
 ```
 
-We can already see that the estimation errors of the twophase estimation are up to 5% smaller than the onephase errors.
+We can already see that the estimation errors of the twophase estimation
+are up to 5% smaller than the onephase errors.
 
-The function `mphase.gain()` can now be used to further compare the performance of the methods:
+The function `mphase.gain()` can now be used to further compare the
+performance of the methods:
 
 ``` r
 mphase.gain(sae.table)
@@ -112,9 +142,20 @@ mphase.gain(sae.table)
 #> 4    D     2290.652       1112.735 twophase psynth extended 51.4 2.058579
 ```
 
-The column `gain` tells us that the twophase estimation procedure here leads to a 67.9 % reduction in variance compared to the one- phase procedure". The column `rel.eff` speciﬁes the relative efﬁciency that can be interpreted as the relative sample size of the one-phase estimator needed to achieve the variance of the multi-phase (here twophase) estimator. For small area "B" we can thus see that we would have to increase the terrestrial sample size by factor 3 in the one-phase approach in order to get the same estimation precision as the twophase extended psynth estimator.
+The column `gain` tells us that the twophase estimation procedure here
+leads to a 67.9 % reduction in variance compared to the one- phase
+procedure“. The column `rel.eff` speciﬁes the relative efﬁciency that
+can be interpreted as the relative sample size of the one-phase
+estimator needed to achieve the variance of the multi-phase (here
+twophase) estimator. For small area”B" we can thus see that we would
+have to increase the terrestrial sample size by factor 3 in the
+one-phase approach in order to get the same estimation precision as the
+twophase extended psynth estimator.
 
-So in our short example, we were able to considerably improve the estimation precision when combining the terrestrial data with the remote sensing data. The package `forestinventory` offers further estimators that can be applied to a wide range of multiphase inventory scenarios.
+So in our short example, we were able to considerably improve the
+estimation precision when combining the terrestrial data with the remote
+sensing data. The package `forestinventory` offers further estimators
+that can be applied to a wide range of multiphase inventory scenarios.
 
 Installation
 ============

@@ -84,6 +84,9 @@
 #'
 #' @references
 #'
+#' Hill, A., Massey, A. F. (2021). \emph{The R Package forestinventory: Design-Based Global and Small
+#' Area Estimations for Multiphase Forest Inventories.} Journal of Statistical Software, 97(4), 1-40.
+#'
 #' Mandallaz, D. (2013). \emph{Design-based properties of some small-area estimators in forest inventory
 #' with two-phase sampling.} Canadian Journal of Forest Research, 43(5), 441-449.
 #'
@@ -101,7 +104,7 @@
 #' Journal of the Royal Statistical Society Series B 57, 289-300.
 #'
 #' @example examples/example_confint.R
-#'
+#' @import methods
 #' @name confint
 NULL
 #>
@@ -167,7 +170,7 @@ confint.twophase<- function(object, parm, level = 0.95, adjust.method="none",...
   # -------------------------------------------#
   # confidence-intervals for twophase-smallarea:
 
-  if(class(object)[1]=="smallarea"){ # if class(object) is c("smallarea", "twophase")
+  if(is(object,"smallarea") & inherits(object, "twophase")){ # if class(object) is c("smallarea", "twophase")
 
     # ----------#
     # adjust confidence level if required:
@@ -220,7 +223,8 @@ confint.twophase<- function(object, parm, level = 0.95, adjust.method="none",...
   # -------------------------------------------#
   # confidence-intervals for twophase-global:
 
-  if(class(object)[1]=="global"){ # if class(object) is c("global", "twophase")
+  if(is(object, "global") & inherits(object, "twophase")){ # if class(object) is c("global", "twophase")
+
 
     if(adjust.method != "none"){
       stop("'bonferroni-correction only reasonable for objects that contain a set of estimates'")
@@ -261,7 +265,8 @@ confint.threephase<- function(object, parm, level = 0.95, adjust.method="none", 
   # --------------------------------#
   # confint for threephase-smallarea:
 
-  if(class(object)[1]=="smallarea"){
+  if(is(object, "smallarea") & inherits(object, "threephase")){ # if class(object) is c("smallarea", "threephase")
+
 
     #-----------#
     # adjust confidence level if required:
@@ -315,7 +320,8 @@ confint.threephase<- function(object, parm, level = 0.95, adjust.method="none", 
   # --------------------------------#
   # summary for threephase-global:
 
-  if(class(object)[1]=="global"){
+  if(is(object, "global") & inherits(object, "threephase")){ # if class(object) is c("global", "threephase")
+
 
     if(adjust.method != "none"){
       stop("'bonferroni-correction only reasonable for objects that contain a set of estimates'")
